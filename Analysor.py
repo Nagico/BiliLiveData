@@ -30,7 +30,7 @@ async def start():
         port=5672,
         username="BiliLiveData",
         password="BiliLiveData",
-        virtualhost="BiliLiveData",
+        virtualhost="/BiliLiveData",
         queue_name="Data",
         ssl=False
     )

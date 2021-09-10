@@ -7,8 +7,12 @@ import asyncio_redis
 
 
 class Redis(object):
-    def __init__(self, host: str = 'localhost', port: int = 6379, db: int = 2):
+    def __init__(self, host: str = 'localhost', password: str = None, port: int = 6379, db: int = 2):
         self.host = host
+        if password is None:
+            self.password = None
+        else:
+            self.password = password.encode(encoding='utf-8')
         self.port = port
         self.db = db
         self.pool = None
@@ -16,6 +20,7 @@ class Redis(object):
     async def connect(self):
         self.pool = await asyncio_redis.Pool.create(
                 host=self.host,
+                password=self.password,
                 port=self.port,
                 db=self.db,
                 poolsize=20

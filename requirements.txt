@@ -2,4 +2,3 @@ bilibili_api
 aiomysql
 asyncio_redis
 aio_pika
-PyMySQL
