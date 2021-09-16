@@ -7,9 +7,9 @@ import asyncio_redis
 
 
 class Redis(object):
-    def __init__(self, host: str = 'localhost', password: str = None, port: int = 6379, db: int = 2):
+    def __init__(self, host: str = 'localhost', password: str = '', port: int = 6379, db: int = 2):
         self.host = host
-        if password is None:
+        if password == '':
             self.password = None
         else:
             self.password = password.encode(encoding='utf-8')

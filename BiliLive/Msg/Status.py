@@ -22,7 +22,7 @@ class Status(object):
 
         self.title = data.get('room_info').get('title')
         self.tags = data.get('room_info').get('tags')
-        if data.get('room_info').get('live_status') == "1":
+        if data.get('room_info').get('live_status') == 1:
             self.live_status = True
         else:
             self.live_status = False
