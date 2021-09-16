@@ -19,33 +19,26 @@ _✨ Author: NagisaCo ✨_
 </p>
 <!-- markdownlint-enable MD033 -->
 
-<!-- vscode-markdown-toc -->
-* 1. [简介](#)
-	* 1.1. [特色](#-1)
-* 2. [快速上手](#-1)
-	* 2.1. [获取 BiliLiveData](#BiliLiveData)
-	* 2.2. [服务端运行](#-1)
-		* 2.2.1. [运行 Analysor.py](#Analysor.py)
-		* 2.2.2. [配置 Analysor 配置文件](#Analysor)
-	* 2.3. [收集端配置](#-1)
-		* 2.3.1. [运行 Collector.py](#Collector.py)
-		* 2.3.2. [配置 Collector 配置文件](#Collector)
-* 3. [服务端环境搭建](#-1)
-	* 3.1. [安装 RabbitMQ 消息队列](#RabbitMQ)
-	* 3.2. [安装 MySQL 数据库](#MySQL)
-	* 3.3. [安装 Redis 数据库](#Redis)
+* 一、[简介](#简介)
+	* 1.1. [特色](#特色)
+* 二、[快速上手](#快速上手)
+	* 2.1. [获取 BiliLiveData](#获取-bililivedata)
+	* 2.2. [服务端运行](#服务端运行)
+		* 2.2.1. [运行 Analysor.py](#运行-analysorpy)
+		* 2.2.2. [配置 Analysor 配置文件](#配置-analysor-配置文件)
+	* 2.3. [收集端配置](#收集端配置)
+		* 2.3.1. [运行 Collector.py](#运行-collectorpy)
+		* 2.3.2. [配置 Collector 配置文件](#配置-collector-配置文件)
+* 三、[服务端环境搭建](#服务端环境搭建)
+	* 3.1. [安装 RabbitMQ 消息队列](#安装-rabbitmq-消息队列)
+	* 3.2. [安装 MySQL 数据库](#安装-mysql-数据库)
+	* 3.3. [安装 Redis 数据库](#安装-redis-数据库)
 
-<!-- vscode-markdown-toc-config
-	numbering=true
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
-##  1. <a name=''></a>简介
+## 简介
 
 BiliLiveData 通过使用 [mosquito/aio-pika](https://github.com/mosquito/aio-pika) 模块搭配 [RabbitMQ](https://www.rabbitmq.com/) 消息队列进行分布式异步通信。
 
-###  1.1. <a name='-1'></a>特色
+### 特色
 
 收集端 `Collector` 采用 [MoyuScript/bilibili-api](https://github.com/MoyuScript/bilibili-api) b站 API 模块，收集指定直播间的用户状态、弹幕、礼物、SC、大航海等信息，并打包发送至 RabbitMQ 。
 
@@ -53,11 +46,11 @@ BiliLiveData 通过使用 [mosquito/aio-pika](https://github.com/mosquito/aio-pi
 
 得益于 Python 的 [asyncio](https://docs.python.org/3/library/asyncio.html) 机制，BiliLiveData 处理事件的吞吐量有了很大的保障。再配合 RabbitMQ 消息队列，BiliLiveData 可实现多收集端共同收集直播数据，广范围高可靠性的收集数据。
 
-##  2. <a name='-1'></a>快速上手
+## 快速上手
 
 *由于可靠性与简便性需求，建议您将服务端 `Analysor` 配置在 Linux 服务器上*
 
-###  2.1. <a name='BiliLiveData'></a>获取 BiliLiveData
+### 获取 BiliLiveData
 
 首先使用以下指令安装本软件：
 
@@ -78,13 +71,13 @@ cd BiliLiveData
 python3 -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-###  2.2. <a name='-1'></a>服务端运行
+### 服务端运行
 
 您需要在服务端配置可访问的 RabbitMQ 消息队列、 MySQL 数据库、 Redis 数据库服务。
 
 如果您无相关配置，可按照后续步骤分别搭建 RabbitMQ 消息队列、 MySQL 数据库与 Redis 数据库，搭建过程详见[服务端环境搭建](#服务端环境搭建)
 
-####  2.2.1. <a name='Analysor.py'></a>运行 Analysor.py
+#### 运行 Analysor.py
 
 使用默认配置文件 `Analysor.conf`
 
@@ -102,7 +95,7 @@ python3 Analysor.py --config YOUR_CONGIF_FILE
 
 > 使用 python3 Analysor.py --help 查看帮助
 
-####  2.2.2. <a name='Analysor'></a>配置 Analysor 配置文件
+#### 配置 Analysor 配置文件
 
 1. 配置 MySQL 
 
@@ -142,11 +135,11 @@ python3 Analysor.py --config YOUR_CONGIF_FILE
 
 您也可以使用 `screen` 后台运行程序
 
-###  2.3. <a name='-1'></a>收集端配置
+### 收集端配置
 
 您需要在收集端配置可访问的 RabbitMQ 消息队列
 
-####  2.3.1. <a name='Collector.py'></a>运行 Collector.py
+#### 运行 Collector.py
 
 使用默认配置文件 `Collector.conf`
 
@@ -164,7 +157,7 @@ python3 Collector.py --config YOUR_CONGIF_FILE
 
 > 使用 python3 Collector.py --help 查看帮助
 
-####  2.3.2. <a name='Collector'></a>配置 Collector 配置文件
+#### 配置 Collector 配置文件
 
 1. 配置 Container
 
@@ -199,9 +192,9 @@ python3 Collector.py --config YOUR_CONGIF_FILE
 
 您也可以使用 `screen` 后台运行程序
 
-##  3. <a name='-1'></a>服务端环境搭建
+## 服务端环境搭建
 
-###  3.1. <a name='RabbitMQ'></a>安装 RabbitMQ 消息队列
+### 安装 RabbitMQ 消息队列
 
 1. 安装 erlang 
    
@@ -292,7 +285,7 @@ python3 Collector.py --config YOUR_CONGIF_FILE
 
 现在，您可以进入 http://your_server_ip:15672/ 查看与管理RabbitMQ
 
-###  3.2. <a name='MySQL'></a>安装 MySQL 数据库
+### 安装 MySQL 数据库
 
 1. 安装 MySQL 8
 
@@ -416,7 +409,7 @@ QUIT
     ```
 
 
-###  3.3. <a name='Redis'></a>安装 Redis 数据库
+### 安装 Redis 数据库
 
 1. 安装 Redis
 
