@@ -56,55 +56,67 @@ cd BiliLiveData
 python3 -m pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-### 服务端配置
+### 服务端运行
 
 您需要在服务端配置可访问的 RabbitMQ 消息队列、 MySQL 数据库、 Redis 数据库服务。
 
 如果您无相关配置，可按照后续步骤分别搭建 RabbitMQ 消息队列、 MySQL 数据库与 Redis 数据库，搭建过程详见[服务端环境搭建](#服务端环境搭建)
 
-#### 配置 Analysor.py 
+#### 运行 Analysor.py
 
-1. 配置 MySQL 
-
-    ```py
-    mysql = MySQL(  # mysql数据库配置
-        host="localhost",  # mysql服务器地址
-        port=3306,  # mysql端口
-        user="bili_live_data",  # 登录用户
-        password="bili_live_data",  # 登录密码
-        db="bili_live_data"  # 使用数据库
-    )
-    ```
-
-2. 配置 Redis 
-
-    ```py
-    redis = Redis(  # redis数据库配置
-        host='localhost',  # redis服务器地址
-        port=6379,  # redis端口
-        db=2  # redis数据库
-    )
-    ```
-
-3. 配置 RabbitMQ 
-
-    ```py
-    mq = RabbitMQ(  # 消息队列配置
-        host="localhost",  # mq服务器地址
-        port=5672,  # mq端口
-        username="BiliLiveData",  # mq用户名
-        password="BiliLiveData",  # mq密码
-        virtualhost="/BiliLiveData",  # mq virtual host
-        queue_name="Data",  # mq 队列名称
-        ssl=False  # ssl启用
-    )
-    ```
-
-#### 启动 Analysor
+使用默认配置文件 `Analysor.conf`
 
 ```shell
 python3 Analysor.py
 ```
+
+或者指定conf配置文件
+
+```shell
+python3 Analysor.py --config YOUR_CONGIF_FILE
+```
+
+第一次运行会提示 `[config] file xxx.conf not found, already create default file` 并自动创建配置文件模板
+
+> 使用 python3 Analysor.py --help 查看帮助
+
+#### 配置 Analysor 配置文件
+
+1. 配置 MySQL 
+
+    ```ini
+    [mysql]  # mysql数据库配置
+    host = localhost  # mysql服务器地址
+    port = 3306  # mysql端口
+    user = bili_live_data  # 登录用户
+    password = bili_live_data  # 登录密码
+    db = bili_live_data  # 使用数据库
+    ```
+
+2. 配置 Redis 
+
+    ```ini
+    [redis]  # redis数据库配置
+    host = localhost  # redis服务器地址
+    password =   # redis密码，无密码请留空
+    port = 6379  # redis端口
+    db = 2  # redis数据库
+    ```
+
+3. 配置 RabbitMQ 
+
+    ```ini
+    [rabbitmq]  # 消息队列配置
+    host = localhost  # mq服务器地址
+    port = 5672  # mq端口
+    username = BiliLiveData  # mq用户名
+    password = BiliLiveData  # mq密码
+    virtualhost = /BiliLiveData  # mq virtual host
+    queue_name = Data  # mq 队列名称
+    ssl = False  # ssl启用
+    ```
+
+配置完成后可使用[运行 Analysor.py](#运行-analysorpy)步骤运行
 
 您也可以使用 `screen` 后台运行程序
 
@@ -112,44 +124,56 @@ python3 Analysor.py
 
 您需要在收集端配置可访问的 RabbitMQ 消息队列
 
-#### 配置 Collector.py
+#### 运行 Collector.py
 
-1. 配置 Container
-
-    ```py
-    container = Container(  # 消息存放容器配置
-            MAX_TIME=300,  # 容纳消息的时间跨度超过该值则发送
-            MAX_NUM=100  # 容纳消息的数量超过该值则发送
-        )
-    ```
-
-2. 配置 RabbitMQ 
-
-    ```py
-    mq = RabbitMQ(  # 消息队列配置
-        host="localhost",  # mq服务器地址
-        port=5672,  # mq端口
-        username="BiliLiveData",  # mq用户名
-        password="BiliLiveData",  # mq密码
-        virtualhost="/BiliLiveData",  # mq virtual host
-        queue_name="Data",  # mq 队列名称
-        ssl=False  # ssl启用
-    )
-    ```
-
-3. 配置待收集的房间 ID 列表
-
-    ```py
-    if __name__ == "__main__":
-    id_list = [21919321, 22321043, 21452505]  # 此处填写id list
-    asyncio.run(start(id_list))
-    ```
-
-#### 启动 Collector
+使用默认配置文件 `Collector.conf`
 
 ```shell
 python3 Collector.py
 ```
+
+或者指定conf配置文件
+
+```shell
+python3 Collector.py --config YOUR_CONGIF_FILE
+```
+
+第一次运行会提示 `[config] file xxx.conf not found, already create default file` 并自动创建配置文件模板
+
+> 使用 python3 Collector.py --help 查看帮助
+
+#### 配置 Collector 配置文件
+
+1. 配置 Container
+
+    ```ini
+    [container]  # 消息存放容器配置
+    max_time = 300  # 容纳消息的时间跨度超过该值则发送
+    max_num = 200  # 容纳消息的数量超过该值则发送
+    ```
+
+2. 配置 Listener
+
+    ```ini
+    [listener]  # 监听设置
+    room_id_list = [21919321, 21919321]  # 所需监听的房间号列表
+    ```
+
+3. 配置 RabbitMQ 
+
+    ```ini
+    [rabbitmq]  # 消息队列配置
+    host = localhost  # mq服务器地址
+    port = 5672  # mq端口
+    username = BiliLiveData  # mq用户名
+    password = BiliLiveData  # mq密码
+    virtualhost = /BiliLiveData  # mq virtual host
+    queue_name = Data  # mq 队列名称
+    ssl = False  # ssl启用
+    )
+    ```
+
+配置完成后可使用[运行 Collector.py.py](#运行-collectorpy)步骤运行
 
 您也可以使用 `screen` 后台运行程序
 

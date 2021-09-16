@@ -16,7 +16,7 @@ class RabbitMQConfig(IConfig):
                 'port': (int, 5672),
                 'username': (str, 'BiliLiveData'),
                 'password': (str, 'BiliLiveData'),
-                'virtualhost': (str, '/'),
+                'virtualhost': (str, '/BiliLiveData'),
                 'queue_name': (str, "Data"),
                 'ssl': (bool, False)
             }
