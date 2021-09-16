@@ -33,6 +33,7 @@ _✨ Author: NagisaCo ✨_
 	* 3.1. [安装 RabbitMQ 消息队列](#安装-rabbitmq-消息队列)
 	* 3.2. [安装 MySQL 数据库](#安装-mysql-数据库)
 	* 3.3. [安装 Redis 数据库](#安装-redis-数据库)
+* 四、[FA♂Q](#faq)
 
 ## 简介
 
