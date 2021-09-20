@@ -10,6 +10,7 @@ import lzma
 import pickle
 from time import time
 from typing import Coroutine
+from loguru import logger
 
 from Porter.UUID import UUID
 
@@ -27,7 +28,9 @@ class Unit(object):
 class Container(object):
     def __init__(self, MAX_TIME: int = 300, MAX_NUM: int = 200):
         self.MAX_TIME = MAX_TIME
+        logger.debug(f'Get config [MAX_TIME]: {MAX_TIME}')
         self.MAX_NUM = MAX_NUM
+        logger.debug(f'Get config [MAX_NUM]: {MAX_NUM}')
         self.data = []
         self.createTime = 0
         self.endTime = 0
@@ -39,7 +42,7 @@ class Container(object):
         self.endTime = int(time())
         unit = Unit(obj)
         self.data.append(unit)
-        print(len(self.data))
+        logger.debug(f'Container len: {len(self.data)}')
         if self.endTime - self.createTime > self.MAX_TIME or len(self.data) >= self.MAX_NUM:
             await self.__pack()
 
@@ -67,6 +70,4 @@ class Container(object):
         })
         compressed = lzma.compress(data)
         self.__clear()
-        import base64
-        print(base64.b64encode(compressed).decode(encoding='utf-8'))
         await asyncio.create_task(self.callback(compressed))

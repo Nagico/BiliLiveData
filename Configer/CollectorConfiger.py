@@ -7,9 +7,10 @@ from Configer.IConfiger import IConfiger
 from Configer.Config.ContainerConfig import ContainerConfig
 from Configer.Config.ListenerConfig import ListenerConfig
 from Configer.Config.Database.RabbitMQConfig import RabbitMQConfig
+from Configer.Config.LoguruConfig import LoguruConfig
 
 
 class CollectorConfiger(IConfiger):
     def __init__(self, config_file: str = 'Collector.conf'):
-        super().__init__(config_file, [ContainerConfig(), ListenerConfig(), RabbitMQConfig()])
+        super().__init__(config_file, [ContainerConfig(), ListenerConfig(), RabbitMQConfig(), LoguruConfig('Collector.log')])
 

@@ -8,7 +8,7 @@ from Database.DAO.MsgDO import MsgDO, BasicInfo
 
 
 class DanmukuDO(MsgDO):
-    async def _create_new_table(self, info: BasicInfo):
+    async def create_new_table(self, info: BasicInfo):
         sql = f"""
             CREATE TABLE `{info.table_name}_danmuku` (
               `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -39,6 +39,9 @@ class DanmukuDO(MsgDO):
             """
 
         await self._execute(sql)
+
+        return f'{info.table_name}_danmuku'
+
 
     async def _insert(self, msg: DanmukuMsg, info: BasicInfo):
         if msg.user.medal is None:

@@ -5,6 +5,8 @@
 # @Author   : NagisaCo
 import asyncio
 import signal
+import base64
+from loguru import logger
 
 from Porter.Receiver.Processor import Processor
 from Database.RabbitMQ import RabbitMQ
@@ -45,6 +47,7 @@ class Receiver(object):
             data = await self.mq.get()
             self.status = True
             self.cnt += 1
-            print(self.cnt)
+            logger.info(f'Package received: {self.cnt}')
+            logger.debug(f'Package content\n{base64.b64encode(data).decode(encoding="utf-8")}')
             await self.processor.store(data)
             self.status = False

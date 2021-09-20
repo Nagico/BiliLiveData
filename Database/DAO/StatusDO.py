@@ -8,7 +8,7 @@ from Database.DAO.MsgDO import MsgDO, BasicInfo
 
 
 class StatusDO(MsgDO):
-    async def _create_new_table(self, info: BasicInfo):
+    async def create_new_table(self, info: BasicInfo):
         sql = f"""
                 CREATE TABLE `{info.table_name}_status` (
               `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'status id',
@@ -40,6 +40,8 @@ class StatusDO(MsgDO):
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
             """
         await self._execute(sql)
+
+        return f'{info.table_name}_status'
 
     async def _insert(self, msg: Status, info: BasicInfo):
 

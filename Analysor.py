@@ -5,6 +5,7 @@
 # @Author   : NagisaCo
 import asyncio
 import click
+from loguru import logger
 
 from Database.MySQL import MySQL
 from Database.Redis import Redis
@@ -13,7 +14,7 @@ from Porter.Receiver.Processor import Processor
 from Porter.Receiver.Receiver import Receiver
 from Configer.AnalysorConfiger import AnalysorConfiger
 from Configer.ConfigException import ConfigException
-
+from Logger.Logger import Logger
 
 async def start(config_file: str):
     try:
@@ -23,6 +24,12 @@ async def start(config_file: str):
     except ConfigException as e:
         print(f'[config] {e.msg}')
         return
+
+    log = Logger()
+    log.set_cmd(config['loguru']['cmd_level'])
+    if config['loguru']['enable_file_log']:
+        log.set_file(config['loguru']['file_name'], config['loguru']['file_level'])
+    logger.info('Analysor starting.')
 
     mysql = MySQL(  # mysql数据库配置
         host=config['mysql']['host'],

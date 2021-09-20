@@ -5,7 +5,7 @@
 # @Author   : NagisaCo
 import time
 from math import log10
-
+from loguru import logger
 import aiomysql
 import pymysql
 
@@ -120,6 +120,7 @@ class MsgDO(object):
         ) ENGINE = INNODB AUTO_INCREMENT = 85 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
         """
         await self._execute(sql)
+        logger.info(f'Create new live table')
 
     async def insert(self, msg):
         info = None
@@ -144,5 +145,9 @@ class MsgDO(object):
     async def _insert(self, msg, info: BasicInfo):
         raise NotImplementedError
 
-    async def _create_new_table(self, info: BasicInfo):
+    async def create_new_table(self, info: BasicInfo):
         raise NotImplementedError
+
+    async def _create_new_table(self, info: BasicInfo):
+        name = await self.create_new_table(info)
+        logger.info(f'Create new table: {name}')

@@ -5,6 +5,8 @@
 # @Author   : NagisaCo
 import lzma
 import pickle
+from loguru import logger
+import base64
 
 from BiliLive.Msg.DanmukuMsg import DanmukuMsg
 from BiliLive.Msg.GiftMsg import GiftMsg
@@ -45,7 +47,7 @@ class Processor(object):
         content = pickle.loads(raw)
         UUID = content['UUID']
         for item in content['data']:
-            # print(item.md5)
+            logger.debug(f'Get MD5:{item.md5}')
             if item.md5 != "":
                 dup = await self._check_duplicate(item.md5)
             else:

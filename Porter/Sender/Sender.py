@@ -5,6 +5,7 @@
 # @Author   : NagisaCo
 import asyncio
 import signal
+from loguru import logger
 
 from Porter.Sender.Container import Container
 from Database.RabbitMQ import RabbitMQ
@@ -37,7 +38,8 @@ class Sender(object):
         await self.mq.connect()
 
     async def send(self, data):
+        import base64
+        logger.debug(f'Sending data\n{base64.b64encode(data).decode(encoding="utf-8")}')
         await asyncio.sleep(0.05)
         await self.mq.send(data)
-        print(len(data))
-        print("Success")
+        logger.info(f'Send success. len: {len(data)}')

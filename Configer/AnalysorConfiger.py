@@ -7,8 +7,9 @@ from Configer.IConfiger import IConfiger
 from Configer.Config.Database.MySQLConfig import MySQLConfig
 from Configer.Config.Database.RedisConfig import RedisConfig
 from Configer.Config.Database.RabbitMQConfig import RabbitMQConfig
+from Configer.Config.LoguruConfig import LoguruConfig
 
 
 class AnalysorConfiger(IConfiger):
     def __init__(self, config_file: str = 'Analysor.conf'):
-        super().__init__(config_file, [MySQLConfig(), RedisConfig(), RabbitMQConfig()])
+        super().__init__(config_file, [MySQLConfig(), RedisConfig(), RabbitMQConfig(), LoguruConfig('Analysor.log')])

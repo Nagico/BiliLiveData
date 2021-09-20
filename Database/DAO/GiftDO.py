@@ -8,7 +8,7 @@ from Database.DAO.MsgDO import MsgDO, BasicInfo
 
 
 class GiftDO(MsgDO):
-    async def _create_new_table(self, info: BasicInfo):
+    async def create_new_table(self, info: BasicInfo):
         sql = f"""
             CREATE TABLE `{info.table_name}_gift` (
               `id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -39,6 +39,8 @@ class GiftDO(MsgDO):
               ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
             """
         await self._execute(sql)
+
+        return f'{info.table_name}_gift'
 
     async def _insert(self, msg: GiftMsg, info: BasicInfo):
         if msg.user.medal is None:

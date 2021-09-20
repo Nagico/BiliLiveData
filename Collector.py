@@ -5,6 +5,7 @@
 # @Author   : NagisaCo
 import asyncio
 import click
+from loguru import logger
 
 from BiliLive.LiveListener import LiveListener
 from Porter.Sender.Container import Container
@@ -12,6 +13,7 @@ from Porter.Sender.Sender import Sender
 from Database.RabbitMQ import RabbitMQ
 from Configer.CollectorConfiger import CollectorConfiger
 from Configer.ConfigException import ConfigException
+from Logger.Logger import Logger
 
 
 async def start(config_file: str):
@@ -22,6 +24,12 @@ async def start(config_file: str):
     except ConfigException as e:
         print(f'[config] {e.msg}')
         return
+
+    log = Logger()
+    log.set_cmd(config['loguru']['cmd_level'])
+    if config['loguru']['enable_file_log']:
+        log.set_file(config['loguru']['file_name'], config['loguru']['file_level'])
+    logger.info('Collector starting.')
 
     container = Container(  # 消息存放容器配置
         MAX_TIME=config['container']['max_time'],  # 容纳消息的时间跨度超过该值则发送
