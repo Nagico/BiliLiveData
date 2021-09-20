@@ -34,7 +34,7 @@ class Receiver(object):
 
         await self.processor.mysql.disconnect()
         await self.processor.redis.disconnect()
-        exit("KeyboardInterrupt")
+        raise KeyboardInterrupt("KeyboardInterrupt")
 
     async def init(self):
         await self.processor.init()

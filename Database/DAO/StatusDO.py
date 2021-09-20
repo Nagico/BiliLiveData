@@ -9,8 +9,7 @@ from Database.DAO.MsgDO import MsgDO, BasicInfo
 
 class StatusDO(MsgDO):
     async def _create_new_table(self, info: BasicInfo):
-        async with self.connection.cursor() as cur:
-            await cur.execute(f"""
+        sql = f"""
                 CREATE TABLE `{info.table_name}_status` (
               `id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT 'status id',
               `live_id` bigint unsigned NOT NULL COMMENT 'live id',
@@ -39,8 +38,8 @@ class StatusDO(MsgDO):
               KEY `search_uid` (`uid`) USING BTREE,
               KEY `search_live` (`live_id`,`live_status`) USING BTREE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-            """)
-            await self.connection.commit()
+            """
+        await self._execute(sql)
 
     async def _insert(self, msg: Status, info: BasicInfo):
 

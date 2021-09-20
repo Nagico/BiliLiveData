@@ -31,7 +31,7 @@ class Sender(object):
             await self.container.send_all()
         await self.mq.disconnect()
 
-        exit("KeyboardInterrupt")
+        raise KeyboardInterrupt("KeyboardInterrupt")
 
     async def init(self):
         await self.mq.connect()

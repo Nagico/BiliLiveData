@@ -9,36 +9,36 @@ from Database.DAO.MsgDO import MsgDO, BasicInfo
 
 class DanmukuDO(MsgDO):
     async def _create_new_table(self, info: BasicInfo):
-        async with self.connection.cursor() as cur:
-            await cur.execute(f"""
-                CREATE TABLE `{info.table_name}_danmuku` (
-                  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-                  `live_id` bigint unsigned NOT NULL,
-                  `live_status` tinyint unsigned NOT NULL,
-                  `room_id` int unsigned NOT NULL,
-                  `color` int unsigned NOT NULL,
-                  `content` varchar(255) NOT NULL,
-                  `user_uid` int unsigned NOT NULL,
-                  `user_username` varchar(255) NOT NULL,
-                  `user_level` int unsigned NOT NULL,
-                  `user_room_admin` tinyint unsigned NOT NULL,
-                  `user_vip_type` int unsigned NOT NULL,
-                  `user_guard_type` int unsigned NOT NULL,
-                  `medal_name` varchar(255) DEFAULT NULL,
-                  `medal_liver_name` varchar(255) DEFAULT NULL,
-                  `medal_level` int unsigned DEFAULT NULL,
-                  `medal_guard_type` int unsigned DEFAULT NULL,
-                  `medal_lighting` tinyint unsigned DEFAULT NULL,
-                  `UUID` varchar(255) NOT NULL, 
-                  `create_time` datetime NOT NULL,
-                  PRIMARY KEY (`id`),
-                  UNIQUE KEY `search_id` (`id`),
-                  KEY `search_room_id` (`room_id`),
-                  KEY `search_uid` (`user_uid`),
-                  KEY `search_live` (`live_id`,`live_status`) USING BTREE
-                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-                """)
-            await self.connection.commit()
+        sql = f"""
+            CREATE TABLE `{info.table_name}_danmuku` (
+              `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+              `live_id` bigint unsigned NOT NULL,
+              `live_status` tinyint unsigned NOT NULL,
+              `room_id` int unsigned NOT NULL,
+              `color` int unsigned NOT NULL,
+              `content` varchar(255) NOT NULL,
+              `user_uid` int unsigned NOT NULL,
+              `user_username` varchar(255) NOT NULL,
+              `user_level` int unsigned NOT NULL,
+              `user_room_admin` tinyint unsigned NOT NULL,
+              `user_vip_type` int unsigned NOT NULL,
+              `user_guard_type` int unsigned NOT NULL,
+              `medal_name` varchar(255) DEFAULT NULL,
+              `medal_liver_name` varchar(255) DEFAULT NULL,
+              `medal_level` int unsigned DEFAULT NULL,
+              `medal_guard_type` int unsigned DEFAULT NULL,
+              `medal_lighting` tinyint unsigned DEFAULT NULL,
+              `UUID` varchar(255) NOT NULL, 
+              `create_time` datetime NOT NULL,
+              PRIMARY KEY (`id`),
+              UNIQUE KEY `search_id` (`id`),
+              KEY `search_room_id` (`room_id`),
+              KEY `search_uid` (`user_uid`),
+              KEY `search_live` (`live_id`,`live_status`) USING BTREE
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+            """
+
+        await self._execute(sql)
 
     async def _insert(self, msg: DanmukuMsg, info: BasicInfo):
         if msg.user.medal is None:

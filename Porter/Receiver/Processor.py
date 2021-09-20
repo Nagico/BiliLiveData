@@ -34,20 +34,11 @@ class Processor(object):
         await self.redis.connect()
         await self.mysql.connect()
 
-        conn = await self.mysql.get_connection()
-        self.statusDO = StatusDO(conn, self.redis)
-
-        conn = await self.mysql.get_connection()
-        self.danmukuDO = DanmukuDO(conn, self.redis)
-
-        conn = await self.mysql.get_connection()
-        self.giftDO = GiftDO(conn, self.redis)
-
-        conn = await self.mysql.get_connection()
-        self.scDO = SCDO(conn, self.redis)
-
-        conn = await self.mysql.get_connection()
-        self.guardDO = GuardDO(conn, self.redis)
+        self.statusDO = StatusDO(self.mysql, self.redis)
+        self.danmukuDO = DanmukuDO(self.mysql, self.redis)
+        self.giftDO = GiftDO(self.mysql, self.redis)
+        self.scDO = SCDO(self.mysql, self.redis)
+        self.guardDO = GuardDO(self.mysql, self.redis)
 
     async def store(self, data: bytes):
         raw = lzma.decompress(data)

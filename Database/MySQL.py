@@ -3,6 +3,7 @@
 # @File     : MySQL.py
 # @Time     : 2021/9/6 15:31
 # @Author   : NagisaCo
+import asyncio
 import aiomysql
 
 
@@ -14,15 +15,16 @@ class MySQL(object):
             user: str = "bili_live_data",
             password: str = "bili_live_data",
             db: str = "bili_live_data"):
-        self.pool = None
+        self.connection = None
         self.host = host
         self.port = port
         self.user = user
         self.password = password
         self.db = db
+        self.lock = asyncio.Lock()
 
     async def connect(self):
-        self.pool = await aiomysql.create_pool(
+        self.connection = await aiomysql.connect(
             host=self.host,
             port=self.port,
             user=self.user,
@@ -31,7 +33,12 @@ class MySQL(object):
         print("mysql connected")
 
     async def disconnect(self):
-        self.pool.close()
+        self.connection.close()
 
-    async def get_connection(self):
-        return await self.pool.acquire()
+    async def execute(self, sql: str):
+        async with self.lock:
+            async with self.connection.cursor() as cur:
+                await cur.execute(sql)
+                last_id = cur.lastrowid
+                await self.connection.commit()
+        return last_id

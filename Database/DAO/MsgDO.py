@@ -12,6 +12,7 @@ import pymysql
 import BiliLive.Msg.Status
 from Database.DAO.LiveDO import LiveDO
 from Database.Redis import Redis
+from Database.MySQL import MySQL
 
 
 class BasicInfo(object):
@@ -24,10 +25,10 @@ class BasicInfo(object):
 
 
 class MsgDO(object):
-    def __init__(self, connection: aiomysql.Connection, redis: Redis):
-        self.connection = connection
+    def __init__(self, mysql: MySQL, redis: Redis):
+        self.mysql = mysql
         self.redis = redis
-        self.live = LiveDO(self.connection)
+        self.live = LiveDO(self.mysql)
 
     async def _prepare_info(self, msg) -> BasicInfo:
         info = BasicInfo()
@@ -138,10 +139,7 @@ class MsgDO(object):
                 await self._insert(msg, info)
 
     async def _execute(self, sql):
-        # print(sql)
-        async with self.connection.cursor() as cursor:
-            await cursor.execute(sql)
-            await self.connection.commit()
+        await self.mysql.execute(sql)
 
     async def _insert(self, msg, info: BasicInfo):
         raise NotImplementedError
