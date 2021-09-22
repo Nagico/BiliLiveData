@@ -23,6 +23,7 @@ class Connection(object):
             )
 
     async def disconnect(self):
+        await asyncio.sleep(0.05)
         await self.conn.ensure_closed()
 
     async def execute(self, sql: str):
